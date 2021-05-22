@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Domain.Common
 {
     public abstract class AuditableBaseEntity
     {
+        [Key]
         public virtual int Id { get; set; }
         public string CreatedBy { get; set; }
         public DateTime Created { get; set; }
