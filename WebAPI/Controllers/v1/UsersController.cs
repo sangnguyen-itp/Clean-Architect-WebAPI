@@ -1,7 +1,12 @@
 ﻿using Application.Features.Users.Commands.CreateUserCommand;
 using Application.Features.Users.Queries.GetAllUsers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers.v1
@@ -11,9 +16,11 @@ namespace WebAPI.Controllers.v1
     public class UsersController : BaseApiController
     {
         private readonly ILogger<UsersController> _logger;
-        public UsersController(ILogger<UsersController> logger)
+        private readonly IDistributedCache _cache;
+        public UsersController(ILogger<UsersController> logger, IDistributedCache cache)
         {
             _logger = logger;
+            _cache = cache;
         }
 
         // GET: api/<controller>

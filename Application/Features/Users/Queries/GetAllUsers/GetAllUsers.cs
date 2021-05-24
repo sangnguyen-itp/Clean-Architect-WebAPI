@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Interfaces;
+using Application.Interfaces.Repositories;
 using Application.Wrappers;
 using AutoMapper;
 using Domain.Entities;
@@ -19,18 +20,18 @@ namespace Application.Features.Users.Queries.GetAllUsers
 
     public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, PagedResponse<IEnumerable<GetAllUsersViewModel>>>
     {
-        private readonly IUserRepositoryAsync _userRepositoryAsync;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public GetAllUsersQueryHandler(IUserRepositoryAsync userRepositoryAsync, IMapper mapper)
+        public GetAllUsersQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _userRepositoryAsync = userRepositoryAsync;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<PagedResponse<IEnumerable<GetAllUsersViewModel>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
             var validFilter = _mapper.Map<GetAllUsersParameter>(request);
-            var users = await _userRepositoryAsync.GetPagedReponseAsync(validFilter.PageNumber, validFilter.PageSize);
+            var users = await _unitOfWork.Users.GetPagedReponseAsync(validFilter.PageNumber, validFilter.PageSize);
             var usersVM = _mapper.Map<IEnumerable<GetAllUsersViewModel>>(users);
             return new PagedResponse<IEnumerable<GetAllUsersViewModel>>(usersVM, validFilter.PageNumber, validFilter.PageSize);
         }

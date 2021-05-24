@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IBaseRepositoryAsync<T> where T: class
+    public interface IBaseRepositoryAsync<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> GetAllAsync();

@@ -13,5 +13,15 @@ namespace WebAPI.Extensions
         {
             app.UseMiddleware<ErrorHandlerMiddleware>();
         }
+
+        public static void UseSwaggerExtension(this IApplicationBuilder app)
+        {
+            app.UseSwagger(c => c.SerializeAsV2 = true);
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FSA - WebAPI - v1");
+            });
+        }
     }
 }

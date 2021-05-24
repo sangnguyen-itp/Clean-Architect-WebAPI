@@ -13,16 +13,18 @@ namespace Infrastructures.Persistence.Context
 {
     public class ApplicationDBContext : DbContext
     {
-        private readonly IDatetimeService _dateTime;
+        //private readonly IDatetimeService _datetimeService;
+        private readonly ICommonService _commonService;
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
         
         }
 
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options, IDatetimeService dateTime): base(options)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options, ICommonService commonService): base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            _dateTime = dateTime;
+            //_datetimeService = datetimeService;
+            _commonService = commonService;
         }
 
         public DbSet<User> Users { get; set; }
@@ -34,10 +36,10 @@ namespace Infrastructures.Persistence.Context
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.Created = _dateTime.NowUTC;
+                        entry.Entity.Created = _commonService.DatetimeService.NowUTC;
                         break;
                     case EntityState.Modified:
-                        entry.Entity.LastModified = _dateTime.NowUTC;
+                        entry.Entity.LastModified = _commonService.DatetimeService.NowUTC;
                         break;
                 }
             }

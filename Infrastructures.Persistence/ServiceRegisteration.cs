@@ -15,8 +15,8 @@ namespace Infrastructures.Persistence
         {
             services.AddDbContext<ApplicationDBContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             #region Repositories
-            services.AddTransient(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
             services.AddTransient<IUserRepositoryAsync, UserRepositoryAsync>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             #endregion
         }
     }

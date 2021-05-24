@@ -3,21 +3,57 @@ using System;
 using Infrastructures.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructures.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210523074142_AccountTable")]
+    partial class AccountTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("Domain.Entities.Account", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LoginType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PIN")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Account");
+                });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
@@ -38,30 +74,34 @@ namespace Infrastructures.Persistence.Migrations
                     b.Property<long>("DOB")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
-                    b.Property<string>("LoginType")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PIN")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Account", b =>
+                {
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithOne("Account")
+                        .HasForeignKey("Domain.Entities.Account", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("Account");
                 });
 #pragma warning restore 612, 618
         }
