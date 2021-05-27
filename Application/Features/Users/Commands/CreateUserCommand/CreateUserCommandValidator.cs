@@ -27,6 +27,11 @@ namespace Application.Features.Users.Commands.CreateUserCommand
                 .NotNull()
                 .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
 
+            RuleFor(p => p.Email)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .NotNull()
+                .EmailAddress().WithMessage("Invalid Email")
+                .MaximumLength(250).WithMessage("{PropertyName} must not exceed 250 characters.");
         }
 
         private bool IsGreaterThan1970(long DOB)

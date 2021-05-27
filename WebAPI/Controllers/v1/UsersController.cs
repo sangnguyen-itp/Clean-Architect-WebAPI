@@ -25,6 +25,8 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/<controller>
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Get([FromQuery] GetAllUsersParameter filter)
         {
             _logger.LogInformation("GET - api/{version}/users - GetAllUsers");
